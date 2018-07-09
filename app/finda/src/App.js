@@ -266,9 +266,13 @@ class App extends React.Component {
                       render={() => <ItemsListPage isMe={true} isForWant={false} isForGroup={true} user={this.state.user} />}
                     />
                     <Route
-      path="/home"
-      render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="test" category={this.state.category}/>}
-      />
+                     path="/home"
+                     render={()=><ItemList  user={this.state.user} wants={this.state.wants} query={this.state.query} isOffers={this.state.isOffers} offers={this.state.offers} test="test" category={this.state.category}/>}
+                    />
+                        <Route
+                        exact path="/"
+                        render={()=><Redirect to="/home"/>}
+                        />
 
 
 
