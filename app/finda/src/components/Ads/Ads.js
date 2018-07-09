@@ -9,8 +9,7 @@ export default class Ads extends React.Component {
 
     }
     render(){
-        console.log("render:");
-        console.log(this.props.aImage);
+
   return (
     <Col xsHidden smHidden md={3} lg={3}>
 

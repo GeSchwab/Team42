@@ -61,6 +61,7 @@ export default class NavBar extends React.Component {
 
   firstDropD(){
 
+
 return(
   <NavDropdown id="firstDropDownTitle" title={this.state.firstDropDownSelected} >
   <MenuItem eventKey={11} id="firstDropDownItem" >{this.state.firstDropDownSecond}</MenuItem>
@@ -104,28 +105,37 @@ return(
 
   handleNavbarSelect(evt, evtK)
   {
-      console.log("onSelect");
-      console.log(this.state.isOffers);
+
       if(evt==11)
       {
-          if(!this.state.isOffers)
+          if(this.state.isOffers)
           {
-              this.setState({
+              console.log("this.state.isOffers==true");
+              this.setState((state)=>({
                   firstDropDownSelected:"Wants",
                   firstDropDownSecond:"Offers",
-                  isOffers:true
+                  isOffers:false,
 
-              },this.props.setIsOffers(this.state.isOffers));
+              }),this.props.setIsOffers(false));
+              console.log("isOffers:");
+              console.log(this.state.isOffers);
+              this.setState({});
+
           }
           else {
 
-
-              this.setState({
+              console.log("else = isOffers");
+              this.setState((state)=>({
                 firstDropDownSelected:"Offers",
                 firstDropDownSecond:"Wants",
-                isOffers:false
-                },this.props.setIsOffers(this.state.isOffers));
+                isOffers:true,
+                }),this.props.setIsOffers(true));
+                console.log("isOffers:");
+                console.log(this.state.isOffers);
+            this.setState({});
           }
+          this.setState({});
+          console.log("this.props.isOffers "+this.props.isOffers);
       }
       if(evt==21){
           this.props.setCategory("");

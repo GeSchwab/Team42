@@ -113,9 +113,11 @@ class App extends React.Component {
 
 
   setIsOffers(o){
-    this.setState({
+    this.setState((state)=>({
     isOffers:o,
-    })
+    }))
+      console.log("o: "+o);
+    console.log("App.state.isOffers: "+ this.state.isOffers)
   }
 
 

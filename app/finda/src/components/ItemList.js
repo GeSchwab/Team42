@@ -17,8 +17,6 @@ export default class ItemList extends React.Component{
 
 offers()
 {
-    console.log("ItemList: ");
-    console.log(this.props.category);
     if(this.props.offers)
     {
       return(  this.props.offers.map(function(offer){
@@ -50,32 +48,6 @@ wants()
 
 }
 
-all(){
-    return(
-        <div>
-                <p>{"isOffers: " +this.props.isOffers}</p>
-
-                <Table hover condensed={false}>
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th></th>
-                            <th ></th>
-
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {this.props.isOffers?this.offers():this.wants()}
-
-
-                    </tbody>
-
-                </Table>
-                </div>
-
-    )
-}
 
 
 
