@@ -17,6 +17,7 @@ const offers = (req,res) => {
   userUtils.getUserOffers({_id: userId},res)
 }
 
+/* old one, not working on PC
 const addWants = (req,res) => {
   let userId = req.userId
   let parseWant = (want) => {
@@ -37,6 +38,35 @@ const addWants = (req,res) => {
     console.log(wants)
     userUtils.addWants(userId,[wants],res)
   }
+}*/
+
+
+const addWants = (req,res) => {
+    let userId = req.userId
+    //retrieve all infos
+    let parseWant = (want) => {
+        let wants = {}
+        let fields = "name descriptions category".split(' ')
+
+        for (let i in fields) {
+            let attr = fields[i]
+            if (!want[attr]) return res.status(400).json({
+                error: `missing required field ${attr}`
+            })
+            // assign it to the offer obj.
+            wants[attr] = want[attr]
+        }
+
+
+        return wants
+    }
+
+    if (Array.isArray(req.body)) {
+        let wants = req.body.map(parseWant)
+        userUtils.addWants(userId, wants, res)
+    } else {
+        userUtils.addWants(userId, [req.body], res)
+    }
 }
 
 const addOffers = (req,res) => {

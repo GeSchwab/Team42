@@ -182,9 +182,7 @@ export default class RegisterLoginForm extends React.Component {
       //   this.shouldRedirectToMePage = true
       // },3000)
       return (
-        <Alert bsStyle="success">
-          <strong> Login Success! </strong> You will be redirected in a few seconds...
-        </Alert>
+          <Redirect to="/me" />
       )
     }
 
@@ -214,9 +212,7 @@ export default class RegisterLoginForm extends React.Component {
       return (
         <div>
           {this.shouldRedirectToMePage?<Redirect to="/me" />:null}
-          <Alert bsStyle="success">
-            <strong> Login Success! </strong> You will be redirected in a few seconds...
-          </Alert>
+        <Redirect to="/me" />
         </div>
       )
     }

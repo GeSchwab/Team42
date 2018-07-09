@@ -243,7 +243,9 @@ export default class ItemListPage extends React.Component {
         console.log('Is Infinite: ' + payload.isInfinite)
       }
     }
+      window.location.reload();
   }
+
   // REMEMBER MARKUS
   async submitDeleteForm(e,item) {
     e.preventDefault()
@@ -347,7 +349,7 @@ export default class ItemListPage extends React.Component {
       <Row>
         <Card>
           <h4>
-          {this.props.isMe?this.getMeTitleString():this.getUserTitleString()}
+          Add new {this.props.isForGroup?"group":(this.props.isForWant?"want":"offer")}
           </h4>
           <Form horizontal>
             {this.getQuestions().map(this.getFormElement.bind(this))}
@@ -392,7 +394,7 @@ export default class ItemListPage extends React.Component {
     )
   }
   addNoItemElement() {
-    let username = this.props.isMe?'You have':`${this.props.username} has`
+    let username = 'You have'
     let wantOrOffer = this.props.isForGroup?'groups':(this.props.isForWant?'wants':'offers')
     let title = `${username} no ${wantOrOffer}`
     return <BackgroundNotice title={title} />
