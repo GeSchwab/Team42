@@ -9,11 +9,14 @@ const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    console.log('testting here' + file)
     cb(null, './uploads/');
   },
   filename: function(req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
+    if(req.body.username != undefined) {
+      cb(null, req.body.username);
+    } else {
+      cb(null, new Date().toISOString() + file.originalname);
+    }
   }
 });
 
@@ -32,7 +35,7 @@ router.post('/offers',middlewares.checkAuthentication,MeController.addOffers)
 router.post('/toPremium',middlewares.checkAuthentication,MeController.toPremium)
 
 router.post("/upload", upload.single('image'), (req, res, next) => {
-  console.log(req.file)
+  console.log(req.file);
   res.status(200).json({path: req.file.path});
 });
 

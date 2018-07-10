@@ -1,6 +1,7 @@
 import React from 'react'
 import {Redirect} from 'react-router'
 import {
+  Form,
   Col,
   Row,
   Image,
@@ -17,13 +18,20 @@ import BackgroundNotice from '../BackgroundNotice/BackgroundNotice'
 import MeTwo from '../../providers/me'
 import './Me.css'
 export default class Me extends React.Component {
+
   constructor(props) {
-    super(props)
+    super(props);
+
+    this.state = {
+      userProfileImage: "https://react-bootstrap.github.io/thumbnail.png"
+    }
   }
+
   userName() {
     if(this.props.user) return this.props.user.username
     return ''
   }
+
   userDescriptions() {
     if(this.props.user && this.props.user.descriptions) {
       return <p>{this.props.user.descriptions}</p>
@@ -35,28 +43,29 @@ export default class Me extends React.Component {
   userWants() {
     return this.props.user.wants
   }
+
   userOffers() {
     return this.props.user.offers
   }
-    numUserWants() {
-      if(!this.props.user.wants)
-      {
-        return null;
-    }
-    else{
-          return this.props.user.wants.length
-      }
 
+  numUserWants() {
+    if(!this.props.user.wants) {
+      return null;
     }
-    numUserOffers() {
-        if(!this.props.user.offers)
-        {
-            return null;
-        }
-        else{
-            return this.props.user.offers.length
-        }
+    else {
+      return this.props.user.wants.length
     }
+  }
+
+  numUserOffers() {
+    if(!this.props.user.offers) {
+      return null;
+    }
+    else {
+     return this.props.user.offers.length
+    }
+  }
+
   editProfileButton() {
     if(this.props.isMe) {
       return (
@@ -66,17 +75,33 @@ export default class Me extends React.Component {
       )
     }
   }
+
   async submitPremium(e) {
     e.preventDefault()
 
     let result = null
     result = await MeTwo.getInstance().toPremium()
   }
+
   toPremiumButton() {
     if(!this.props.user.isPremium) return (
       <Button bsStyle="success" onClick={this.submitPremium.bind(this)}> To Premium </Button>
     )
   }
+
+  async uploadUserImage(fileInput) {
+    let file = fileInput.target.files[0];
+
+    console.log(file);
+    let meProvider = MeTwo.getInstance();
+    let result = null;
+    result = await meProvider.uploadUserImage(file, this.userName() + ".png");
+    result = result.replace('"', '');
+    result = result.replace('"', '');
+    this.state.userProfileImage = 'http://localhost:3000/' + result
+    console.log('Received file path...   ' + 'http://localhost:3000/' + result.replace('"', ''))
+  }
+
   wantsSection() {
     return (
       <div>
@@ -86,7 +111,7 @@ export default class Me extends React.Component {
                   {
                   <BackgroundNotice title="This user has no wants" />
                   }
-      else{
+      else {
           <div className="ItemContainer">
               {this.userWants().map(want => (
                   <ItemCard want={want} />
@@ -106,6 +131,7 @@ export default class Me extends React.Component {
 
     )
   }
+
   offersSection() {
     return (
       <div>
@@ -135,6 +161,7 @@ export default class Me extends React.Component {
       </div>
     )
   }
+
   groupsSection() {
     return (
       <div>
@@ -164,13 +191,18 @@ export default class Me extends React.Component {
       </div>
     )
   }
+
   addUserInformation() {
     return (
       <div>
         <Row>
           <Col className="ThumbnailCol" xs={12} md={4} sm={4} lg={4}>
-            <Image className="BigThumbnail" src="https://react-bootstrap.github.io/thumbnail.png" circle />
+            <Image className="BigThumbnail" src={this.state.userProfileImage} circle />
+            <Form>
+              <input type="file" onChange={(evt) => this.uploadUserImage(evt)} />
+            </Form>
           </Col>
+
           <Col className="NameCol" xs={12} md={8} sm={8} lg={8}>
             <Row>
               <h2>{this.userName()} ({this.props.user.isPremium?"":"Not "}Premium)</h2>
@@ -193,6 +225,7 @@ export default class Me extends React.Component {
       </div>
     )
   }
+
   addUserStatus() {
     return (
       <div className="SubpageContainer">
@@ -210,6 +243,7 @@ export default class Me extends React.Component {
       </div>
     )
   }
+
   render() {
     if(!Auth.getInstance().isLoggedIn()) return <Redirect to='/login' />
     // logged in but user not loaded
