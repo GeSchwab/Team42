@@ -65,6 +65,7 @@ wants()
         <Table hover condensed={false}>
             <thead>
                 <tr>
+                    <th>{this.props.isOffers?"Offers":"Wants"}</th>
                     <th></th>
                     <th></th>
 
