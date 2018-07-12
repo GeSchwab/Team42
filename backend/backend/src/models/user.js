@@ -20,6 +20,7 @@ const UserSchema  = new mongoose.Schema({
     },
     isPremium: {
       type: Boolean,
+      required: true,
     },
     dob: {
       type: Date,
@@ -29,9 +30,12 @@ const UserSchema  = new mongoose.Schema({
       type: String,
       required: false,
     },
+    picturePath: {
+      type: String,
+      required: true,
+    },
     wants: [{type:mongoose.Schema.Types.ObjectId,ref: 'Want'}],
     offers: [{type: mongoose.Schema.Types.ObjectId,ref: 'Offer'}],
-
     groups: [{type: mongoose.Schema.Types.ObjectId,ref: 'Group'}],
 });
 
