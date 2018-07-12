@@ -172,9 +172,7 @@ return(
         </Navbar.Header>
         <Navbar.Collapse>
           <Nav >
-
             {this.firstDropD()}
-
 
                 <NavDropdown id="Category" title={`In Category: ${this.props.category}`}>
                     <MenuItem id="All" eventKey={21}>All</MenuItem>
@@ -182,9 +180,7 @@ return(
                     <MenuItem id="CourseSlots" eventKey={23}>Courses</MenuItem>
                     <MenuItem id="People" eventKey={24}>People</MenuItem>
                     <MenuItem id="Groups" eventKey={25}>Groups</MenuItem>
-
                 </NavDropdown>
-
           </Nav>
           <Nav className="NavRight" pullRight>
             {this.barRightItems()}
