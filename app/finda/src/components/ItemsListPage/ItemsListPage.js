@@ -263,6 +263,7 @@ export default class ItemListPage extends React.Component {
       console.log('Amount: ' + item.amount)
       console.log('Is Infinite: ' + item.isInfinite)
     }
+    window.location.reload();
   }
 
   async validateForm(e) {

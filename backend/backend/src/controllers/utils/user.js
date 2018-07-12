@@ -77,52 +77,104 @@ const getUserOffers = (query,res) => {
     }))
 }
 
-const addWants = async (userId,wants,res) => {
+const addUserWants = async (userId,wants,res) => {
   try {
     let user = await UserModel
       .findOne({_id: userId})
       .populate('wants')
       .exec()
     if (!user) {
-      return res.status(404).json({
-        error: "This user does not exist"
-      })
+      return res
+      .status(404)
+      .json(
+        {error: "This user does not exist"}
+      )
     }
     // premium check
     if(!user.isPremium
       && user.wants
-      && user.wants.length + wants.length > config.nonPremiumWantsLimit)
-    {
-      return res.status(400).json({
-        error: 'User wants limit has been exceed'
-      })
+      && user.wants.length + wants.length > config.nonPremiumWantsLimit) {
+      return res
+      .status(400)
+      .json(
+        {error: 'User wants limit has been exceed'}
+      )
     }
     // inserting wants
     let wantsRef = await Promise.all(
-      wants.map(want => WantsModel.create(Object.assign(
-        {},
-        want,
-        {creator: user._id}))
+      wants.map(
+        want => WantsModel.create(Object.assign({},want,{creator: user._id})
+        )
       )
     )
 
-    let result = await user.update(
+    let result = await user
+    .update(
       {
         $push: {
           'wants':{
             '$each':wantsRef.map(want => want._id)
           }
         }
-      }).exec()
-    return res.status(200).json(wantsRef)
-  }catch(e) {
-    res.status(500).json({
-      error: e.message
-    })
+      }
+    )
+    .exec()
+    return res
+    .status(200)
+    .json(wantsRef)
+  }
+  catch(e) {
+    res
+    .status(500)
+    .json({error: e.message})
   }
 
 }
-const addOffers = async (userId,offers,res) => {
+
+const deleteUserWants = async (userId,wants,res) => {
+  try {
+    let user = await UserModel
+      .findOne({_id: userId})
+      .populate('wants')
+      .exec()
+    if (!user) {
+      return res
+      .status(404)
+      .json({error: "This user does not exist"})
+    }
+    // inserting wants
+    let wantsRef = await Promise.all(
+      wants.map(
+        want => WantsModel.deleteOne({_id: want._id})
+      )
+    )
+    console.log("Ergebnis")
+    console.log(userId)
+    console.log(wants.map(want => want._id))
+    let result = await Promise.all(
+      wants.map(
+        want => this.xyz(user,userId,want._id)
+      )
+    )
+    return res
+    .status(200)
+    .json(wantsRef)
+  }
+  catch(e) {
+    res
+    .status(500)
+    .json({error: e.message})
+  }
+}
+
+const xyz = async (o,a,b) => {
+  console.log(a)
+  console.log(b)
+  let x = o.findOneAndUpdate({a}, {$pull: {'wants': {_id: b}}})
+  console.log(x)
+}
+
+const addUserOffers = async (userId,offers,res) => {
   try {
     let user = await UserModel
       .findOne({_id: userId})
@@ -166,7 +218,43 @@ const addOffers = async (userId,offers,res) => {
   }
 }
 
-const toPremium = async (userId,res) => {
+const deleteUserOffers = async (userId,offers,res) => {
+  try {
+    let user = await UserModel
+      .findOne({_id: userId})
+      .populate('offers')
+      .exec()
+    if (!user) {
+      return res
+      .status(404)
+      .json({error: "This user does not exist"})
+    }
+    // inserting offers
+    let offersRef = await Promise.all(
+      offers.map(
+        offer => OffersModel.deleteOne({_id: offer._id})
+      )
+    )
+    Favorite.update( {cn: req.params.name}, { $pullAll: {uid: [req.params.deleteUid] } } )
+    let result = await Promise.all(
+      offers.map(
+        offer => user.findOneAndUpdate(
+          {userId}, {$pull: {offers: {_id: offer._id}}}
+        )
+      )
+    )
+    return res
+    .status(200)
+    .json(offersRef)
+  }
+  catch(e) {
+    res
+    .status(500)
+    .json({error: e.message})
+  }
+}
+
+const userToPremium = async (userId,res) => {
   try {
     let result = await UserModel.update({_id: userId},{isPremium: true}).exec()
     res.status(200).json(result)
@@ -181,9 +269,11 @@ module.exports = {
   getUserWants,
   getUserOffers,
 
-  addWants,
-  addOffers,
+  addUserWants,
+  deleteUserWants,
+  addUserOffers,
+  deleteUserOffers,
 
-  toPremium,
+  userToPremium,
   deleteUser,
 }
