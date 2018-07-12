@@ -4,6 +4,7 @@ Group 42
 ## How to set up the frontend + backend
 - Delete package-lock.json
 - If you are on a mac, make the following changes to your package.json file:
+
 From:
 ```
   "scripts": {
