@@ -25,15 +25,33 @@ export default class Me {
   }
 
   async uploadImage(image) {
-    console.log('image is here: ' + image.name)
+    console.log('image is here: ' + image.name);
     if(!this.user) {
-      return null
+      return null;
     }
     else {
       let response = await this.auth.imageUploadPost('/me/upload', image)
       console.log('only response...' + response)
       return response
     }
+  }
+
+  async uploadUserImage(image, userName) {
+    console.log('image is here: ' + image.name);
+    if(!this.user) {
+      return null;
+    }
+    else {
+      let response = await this.auth.userImageUploadPost('/me/upload', image, userName);
+      console.log('only response...' + response);
+      return response;
+    }
+  }
+  async uploadUserImageTwo(image, userName) {
+    console.log('image is here: ' + image.name);
+    let response = await this.auth.userImageUploadPost('/me/upload', image, userName);
+    console.log('only response...' + response);
+    return response;
   }
 
   async addWants(want) {

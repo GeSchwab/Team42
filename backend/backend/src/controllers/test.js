@@ -26,6 +26,7 @@ const testRegister = async (req,res) => {
       gender: 'M',
       isPremium: 'false',
       dob: new Date('1/1/1994'),
+      picturePath: 'http://www.sunny-beats.de/download/Testbild.jpg',
       wants: [want_id],
     })
     const token = jwt.sign({ id: user._id, username: user.username }, config.JwtSecret, {

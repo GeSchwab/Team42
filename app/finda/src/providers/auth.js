@@ -45,14 +45,14 @@ export default class AuthProvider {
     return response
   }
 
-  async authenticatedPost(url,data = {}) {
+  async authenticatedPost(url, data = {}) {
     let response = await Http.post(`${apiURL}${url}`,data,{"x-access-token": this.getToken()})
     return response
   }
 
-  async imageUploadPost(url,data = {}) {
+  async imageUploadPost(url, data = {}) {
     const formData = new FormData();
-    formData.append('image',data)
+    formData.append('image', data)
     const config = {
         headers: {
             'content-type': 'multipart/form-data'
@@ -64,12 +64,27 @@ export default class AuthProvider {
     return response
   }
 
-  async authenticatedDelete(url,data = {}) {
+  async userImageUploadPost(url, data = {}, username) {
+    const formData = new FormData();
+    formData.append('username', username);
+    formData.append('image', data);
+    const config = {
+        headers: {
+            'content-type': 'multipart/form-data'
+        }
+    }
+    let response = await axios.post(apiURL + url, formData,config)
+    response = JSON.stringify(response.data.path)
+    console.log(response)
+    return response
+  }
+
+  async authenticatedDelete(url, data = {}) {
     let response = await Http.delete(`${apiURL}${url}`,data,{"x-access-token": this.getToken()})
     return response
   }
 
-  async authenticatedPatch(url,data = {}) {
+  async authenticatedPatch(url, data = {}) {
     let response = await Http.patch(`${apiURL}${url}`,data,{"x-access-token": this.getToken()})
     return response
   }

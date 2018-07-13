@@ -123,6 +123,7 @@ class App extends React.Component {
 
 
     componentWillMount(){
+        document.title="FindA";
         this.getWants();
         this.getOffers();
 
