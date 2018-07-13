@@ -200,9 +200,6 @@ export default class Me extends React.Component {
         <Row>
           <Col className="ThumbnailCol" xs={12} md={4} sm={4} lg={4}>
             <Image className="BigThumbnail" src={this.props.user.picturePath} circle />
-            <Form>
-              <input type="file" onChange={(evt) => this.uploadUserImage(evt)} />
-            </Form>
           </Col>
 
           <Col className="NameCol" xs={12} md={8} sm={8} lg={8}>
