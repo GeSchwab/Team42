@@ -18,7 +18,7 @@ import {
 } from 'react-bootstrap'
 import DatePicker from 'react-date-picker'
 import Auth from '../../providers/auth'
-
+import MeTwo from '../../providers/me'
 import Toaster from '../../providers/toaster'
 import { Redirect } from 'react-router'
 import FormElements from '../../utils/form'
@@ -70,7 +70,8 @@ export default class RegisterLoginForm extends React.Component {
     this.state = {
       shouldRedirectToMePage: false,
       formSubmitMessage: null,
-      hasChanged: fields.map(field => ({[field]: false}))
+      hasChanged: fields.map(field => ({[field]: false})),
+      userProfileImage: "https://react-bootstrap.github.io/thumbnail.png"
     }
   }
   async submitForm(e) {
@@ -87,6 +88,7 @@ export default class RegisterLoginForm extends React.Component {
       payload[field] = this.state[field]
     }
     payload["isPremium"] = false
+    payload["picturePath"] = this.state.userProfileImage
     // register / login
     let authProvider = Auth.getInstance()
     
@@ -205,6 +207,20 @@ export default class RegisterLoginForm extends React.Component {
       </Row> 
     )
   }
+
+  async uploadUserImage(fileInput) {
+    let file = fileInput.target.files[0];
+
+    console.log(file);
+    let meProvider = MeTwo.getInstance();
+    let result = null;
+    result = await meProvider.uploadUserImageTwo(file, this.state["username"] + ".png");
+    result = result.replace('"', '');
+    result = result.replace('"', '');
+    this.setState(Object.assign({},this.state,{userProfileImage: 'http://localhost:3000/' + result}))
+    console.log('Received file path...   ' + 'http://localhost:3000/' + result.replace('"', ''))
+  }
+
   render() {
     // you dont need another registration / login when you have logged in
     if (Auth.getInstance().isLoggedIn()) {
@@ -223,6 +239,7 @@ export default class RegisterLoginForm extends React.Component {
         <Card className="FormContainer" bsSize="large">
           <Form horizontal>
             {this.config.map(this.getFormElement.bind(this))}
+            <input type="file" onChange={(evt) => this.uploadUserImage(evt)} />
             <FormGroup>
               <Col smOffset={2} sm={10}>
                 <Button bsStyle="primary" type="submit" onClick={this.submitForm.bind(this)}>{this.props.isRegister?"Register":"Login"}</Button>

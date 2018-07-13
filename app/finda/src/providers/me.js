@@ -47,6 +47,12 @@ export default class Me {
       return response;
     }
   }
+  async uploadUserImageTwo(image, userName) {
+    console.log('image is here: ' + image.name);
+    let response = await this.auth.userImageUploadPost('/me/upload', image, userName);
+    console.log('only response...' + response);
+    return response;
+  }
 
   async addWants(want) {
     if(!this.user) {
