@@ -99,7 +99,8 @@ export default class Me extends React.Component {
     result = await meProvider.uploadUserImage(file, this.userName() + ".png");
     result = result.replace('"', '');
     result = result.replace('"', '');
-    this.state.userProfileImage = 'http://localhost:3000/' + result
+    //this.state.userProfileImage = 'http://localhost:3000/' + result
+    this.props.user.picturePath = 'http://localhost:3000/' + result;
     console.log('Received file path...   ' + 'http://localhost:3000/' + result.replace('"', ''))
   }
 
@@ -192,7 +193,7 @@ export default class Me extends React.Component {
       </div>
     )
   }
-  
+
   addUserInformation() {
     return (
       <div>
