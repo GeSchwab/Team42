@@ -5,7 +5,6 @@ import NavBar from './components/NavBar/NavBar'
 import Ads from './components/Ads/Ads'
 import RegisterLoginForm from './components/RegisterLoginForm/RegisterLoginForm'
 import ItemsListPage from './components/ItemsListPage/ItemsListPage'
-import logo from './logo.svg';
 import './App.css';
 import ContentRoutes from "./routes"
 import {apiURL} from "./config"
